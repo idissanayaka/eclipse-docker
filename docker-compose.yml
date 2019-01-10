@@ -1,0 +1,19 @@
+version: "3.4"
+services:
+  eclipse:
+    container_name: eclipse-${USER}
+    image: eclipse-vnc
+    build: .
+    ports:
+      - 5800:5800
+    volumes:
+      - /home/${USER}:/home/${USER}
+    working_dir: /home/${USER}
+    environment:
+      APP_USER: ${USER}
+      # corey
+      USER_ID: 1001
+      # tuuyi
+      GROUP_ID: 1000
+      DISPLAY_WIDTH: 1366
+      DISPLAY_HEIGHT: 768
