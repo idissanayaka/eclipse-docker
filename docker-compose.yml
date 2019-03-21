@@ -11,9 +11,12 @@ services:
     working_dir: /home/${USER}
     environment:
       APP_USER: ${USER}
-      # corey
-      USER_ID: 1001
-      # tuuyi
-      GROUP_ID: 1000
       DISPLAY_WIDTH: 1366
       DISPLAY_HEIGHT: 768
+      KEEP_APP_RUNNING: 1
+      UMASK: 002
+      SECURE_CONNECTION: 1
+      # create a personalized .env file with:
+      # echo USER_ID=$(id -u) > .env
+      # echo GROUP_ID=$(id -g) >> .env
+      # echo VNC_PASSWORD=$(dd if=/dev/urandom bs=1 count=20 | openssl dgst -sha256 | base64 | head -n1 | cut -c 10-21) >> .env
