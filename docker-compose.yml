@@ -1,23 +1,8 @@
 version: "3.4"
 services:
   eclipse:
-    container_name: eclipse-${USER}
-    image: eclipse-vnc-${USER}
+    image: eclipse-vnc
     build: .
     ports:
-      - ${GUI_PORT-5800}:5800
-    volumes:
-      - /home/${USER}:/home/${USER}
-    working_dir: /home/${USER}
-    environment:
-      APP_USER: ${USER}
-      DISPLAY_WIDTH: 1366
-      DISPLAY_HEIGHT: 768
-      KEEP_APP_RUNNING: 1
-      UMASK: 002
-      SECURE_CONNECTION: 1
-    # create a personalized ${USER}.env file with:
-    # echo USER_ID=$(id -u) > ${USER}.env
-    # echo GROUP_ID=$(id -g) >> ${USER}.env
-    # echo VNC_PASSWORD=$(dd if=/dev/urandom bs=1 count=20 | openssl dgst -sha256 | base64 | head -n1 | cut -c 10-21) >> ${USER}.env
-    env_file: ${USER}.env
+      - 5800:5800
+      - 5900:5900
