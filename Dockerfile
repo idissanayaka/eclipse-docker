@@ -1,13 +1,28 @@
+FROM container-registry.oracle.com/middleware/weblogic:12.2.1.4-dev AS weblogic
+
 # Pull base image.
 FROM jlesage/baseimage-gui:ubuntu-24.04-v4.6.4
 
 # Install Eclipse
 RUN apt-get update \
   && apt-get -y upgrade \
-  && apt-get install -y sudo curl wget bash perl maven openjdk-11-jdk libswt-gtk-4-jni
+  && apt-get install -y sudo curl wget bash perl maven openjdk-8-jdk libswt-gtk-4-jni unzip git
 
-RUN wget -O - 'https://mirror.kakao.com/eclipse/technology/epp/downloads/release/2024-09/R/eclipse-jee-2024-09-R-linux-gtk-x86_64.tar.gz' | tar xz -C /opt/
+RUN wget 'https://download.oracle.com/otn_software/oepe/12.2.1.9/photon/oepe-12.2.1.9-photon-distro-linux-gtk-x86_64.zip' -O /tmp/eclipse.zip
+
+RUN mkdir -p /opt/eclipse \
+  && unzip /tmp/eclipse.zip -d /opt/eclipse \
+  && rm /tmp/eclipse.zip
+
+RUN apt install -y locales && \
+    sed-patch 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
+    locale-gen
+ENV LANG=en_US.UTF-8
 
 COPY rootfs/ /
+
+COPY --from=weblogic /u01/oracle /u01/oracle
+
+RUN take-ownership /u01
 
 ENV APP_NAME="Eclipse"

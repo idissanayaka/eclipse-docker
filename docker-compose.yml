@@ -1,7 +1,28 @@
 services:
   eclipse:
-    image: eclipse
+    image: ireshmm/eclipse-weblogic:latest
     build: .
     ports:
       - 5800:5800
       - 5900:5900
+    networks:
+      - weblogic-dev
+    volumes:
+      - eclipse_config:/config
+  weblogic:
+    image: container-registry.oracle.com/middleware/weblogic:12.2.1.4
+    ports:
+      - 7001:7001
+      - 9002:9002
+    volumes:
+      - ./domain.properties:/u01/oracle/properties/domain.properties
+    env_file:
+      - domain.properties.env
+    networks:
+      - weblogic-dev
+
+networks:
+  weblogic-dev:
+
+volumes:
+  eclipse_config:
