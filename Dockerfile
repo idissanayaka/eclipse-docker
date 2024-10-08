@@ -21,6 +21,12 @@ ENV LANG=en_US.UTF-8
 
 COPY rootfs/ /
 
+# Install terminal plugin
+RUN /opt/eclipse/eclipse -nosplash -application org.eclipse.equinox.p2.director \
+  -repository 'https://download.eclipse.org/tm/terminal/marketplace' \
+  -installIU org.eclipse.tm.terminal.feature.feature.group \
+  -destination /opt/eclipse/
+
 COPY --from=weblogic /u01/oracle /u01/oracle
 
 RUN take-ownership /u01
