@@ -9,6 +9,7 @@ services:
       - weblogic-dev
     volumes:
       - eclipse_config:/config
+      - $HOME/repositories:/config/repositories
   weblogic:
     image: container-registry.oracle.com/middleware/weblogic:12.2.1.4
     ports:
