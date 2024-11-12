@@ -1,4 +1,4 @@
-FROM container-registry.oracle.com/middleware/weblogic:12.2.1.4-dev AS weblogic
+FROM ireshmm/weblogic:12.1.3-developer AS weblogic
 
 # Pull base image.
 FROM jlesage/baseimage-gui:ubuntu-24.04-v4.6.4
@@ -28,6 +28,10 @@ RUN /opt/eclipse/eclipse -nosplash -application org.eclipse.equinox.p2.director 
   -destination /opt/eclipse/
 
 COPY --from=weblogic /u01/oracle /u01/oracle
+
+COPY --from=weblogic /usr/java/jdk1.8.0_431 /u01/jdk1.8
+
+ENV JAVA_HOME="/u01/jdk1.8"
 
 RUN take-ownership /u01
 
