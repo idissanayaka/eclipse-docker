@@ -1,19 +1,14 @@
 services:
   eclipse:
-    image: ireshmm/eclipse-weblogic:12.1.3-developer-snap
+    image: ireshmm/eclipse-weblogic:12.2.1.4-dev
     build: .
     ports:
       - 5800:5800
       - 5900:5900
-    networks:
-      - weblogic-dev
     volumes:
       - eclipse_config:/config
       - $HOME/repositories:/config/repositories
       - weblogic_user_projects:/u01/oracle/user_projects
-
-networks:
-  weblogic-dev:
 
 volumes:
   eclipse_config:

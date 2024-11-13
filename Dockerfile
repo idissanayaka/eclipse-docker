@@ -1,7 +1,9 @@
-FROM ireshmm/weblogic:12.1.3-developer AS weblogic
+FROM container-registry.oracle.com/middleware/weblogic:12.2.1.4-dev AS weblogic
 
 # Pull base image.
 FROM jlesage/baseimage-gui:ubuntu-24.04-v4.6.4
+
+COPY rootfs /
 
 # Install Eclipse
 RUN apt-get update \
@@ -19,19 +21,15 @@ RUN apt install -y locales && \
     locale-gen
 ENV LANG=en_US.UTF-8
 
-COPY rootfs/ /
-
 # Install terminal plugin
 RUN /opt/eclipse/eclipse -nosplash -application org.eclipse.equinox.p2.director \
   -repository 'https://download.eclipse.org/tm/terminal/marketplace' \
   -installIU org.eclipse.tm.terminal.feature.feature.group \
   -destination /opt/eclipse/
 
-COPY --from=weblogic /u01/oracle /u01/oracle
+COPY --from=weblogic /u01 /u01
 
-COPY --from=weblogic /usr/java/jdk1.8.0_431 /u01/jdk1.8
-
-ENV JAVA_HOME="/u01/jdk1.8"
+ENV JAVA_HOME="/u01/jdk"
 
 RUN take-ownership /u01
 
